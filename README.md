@@ -15,6 +15,8 @@ El dueño de un negocio escribe sus costos fijos, su costo por unidad, su precio
 
 Modelo: $C(x)=CF+vx+ax^2$, $I(x)=px$, $U(x)=I(x)-C(x)$, con $x \ge 0$.
 
+El modelo exige $CF>0$ y $a>0$. Con $CF=0$ el costo medio queda en $v+ax$, que solo crece, y la producción mínima conveniente no existe; con $a=0$ la utilidad crecería sin límite y no habría punto óptimo. La app valida ambas condiciones.
+
 ## Cómo verla
 
 Abre `index.html` en el navegador, o entra al enlace de GitHub Pages del repositorio.

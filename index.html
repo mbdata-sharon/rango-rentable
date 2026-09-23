@@ -724,8 +724,8 @@ function readInputs(){
 }
 function validate(o){
   const errs=[],mark=(id,bad)=>$(id).classList.toggle('bad',bad);
-  mark('b-cf',!(o.CF>=0));mark('b-cv',!(o.v>=0));mark('b-pv',!(o.p>0));mark('b-aa',!(o.a>0));
-  if(!(o.CF>=0))errs.push("<span><b>Costos fijos:</b> escribe cuánto pagas al mes (puede ser 0).</span>");
+  mark('b-cf',!(o.CF>0));mark('b-cv',!(o.v>=0));mark('b-pv',!(o.p>0));mark('b-aa',!(o.a>0));
+  if(!(o.CF>0))errs.push("<span><b>Costos fijos:</b> deben ser mayores que cero. Sin costos fijos que repartir, el costo medio Cme(x) = v + ax solo crece y no existe una producción mínima conveniente.</span>");
   if(!(o.v>=0))errs.push("<span><b>Costo por unidad:</b> escribe cuánto te cuesta cada unidad.</span>");
   if(!(o.p>0))errs.push("<span><b>Precio:</b> escribe un precio de venta mayor que cero.</span>");
   if(!(o.a>0))errs.push("<span><b>Encarecimiento:</b> debe ser mayor que cero. Sin él la utilidad crecería sin límite y no habría punto óptimo. Usa “No sé este valor”.</span>");
