@@ -318,6 +318,15 @@ section.block{margin-top:88px}
 .extra-h{margin-top:40px;margin-bottom:16px;font-size:1.0625rem;display:flex;align-items:center;gap:12px;color:var(--ink)}
 .extra-h::after{content:"";flex:1;height:1px;background:var(--line)}
 
+/* Estado vacío: cuando los datos no son válidos no se muestra el cálculo anterior */
+.empty{padding:30px 22px;text-align:center;color:var(--ink-3);font-size:13.5px;font-weight:600;
+  line-height:1.5;border:1px dashed var(--line-2);border-radius:var(--r);background:transparent}
+li.empty{list-style:none}
+td.empty{border:0;border-radius:0;text-align:center;white-space:normal}
+.tscroll:has(td.empty){border-style:dashed}
+.tscroll:has(td.empty) + .scroll-hint{display:none}
+.extra-h:has(+ .steps:empty){display:none}
+
 /* -- 8. Tablas ------------------------------------------------------------ */
 .tscroll{overflow-x:auto;overscroll-behavior-x:contain;margin-top:14px;border-radius:var(--r);
   border:1px solid var(--line);background:var(--card);scrollbar-width:thin;
@@ -793,7 +802,20 @@ function update(){
 function renderInvalid(){
   const a=$('answer');a.classList.remove('bad');
   a.innerHTML=`<div class="biz">${icon('info')}Faltan datos</div><h2>Completa tus datos para ver tu rango</h2><p class="profit">Revisa los campos marcados en rojo.</p>`;
-  $('tiles').innerHTML='';$('zone').innerHTML='';$('goal').innerHTML='';SUMMARY="";
+  /* Nada de lo que hay abajo corresponde ya a los datos del formulario: se retira
+     en vez de dejar el cálculo anterior, que se leería como si fuera el vigente. */
+  const ph=t=>`<p class="empty">${t}</p>`;
+  $('tiles').innerHTML='';$('zone').innerHTML='';$('goal').innerHTML='';
+  $('steps').innerHTML=ph('Corrige los datos y aquí vuelve el procedimiento paso a paso.');
+  $('extras').innerHTML='';
+  $('chU').innerHTML=ph('Sin datos válidos no hay curva que dibujar.');
+  $('chC').innerHTML=ph('Sin datos válidos no hay curva que dibujar.');
+  $('chS').innerHTML='';$('pred').innerHTML='';$('sens').innerHTML='';
+  $('cmp').innerHTML='<tbody><tr><td class="empty">Corrige los datos para comparar escenarios.</td></tr></tbody>';
+  $('vtab').innerHTML='<tbody><tr><td class="empty">Corrige los datos para ver la tabla de verificación.</td></tr></tbody>';
+  $('owner').innerHTML='<li class="empty">Corrige los datos para ver tu plan del mes.</li>';
+  $('fallback').hidden=true;
+  BASE=null;SUMMARY="";
 }
 function xMaxFor(r,o){let xm=r.profitable?r.e2*1.12:r.xs*2.2;xm=Math.max(xm,r.xmin*1.4,10);if(o.q)xm=Math.max(xm,o.q*1.1);if(o.G!=null){const g=r.goal(o.G);if(g.ok)xm=Math.max(xm,g.hi*1.05);}return niceNum(xm/6)*Math.ceil(xm/niceNum(xm/6));}
 function renderAnswer(r,o){
